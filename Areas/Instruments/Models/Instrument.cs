@@ -1,15 +1,28 @@
-﻿namespace Aspire.Areas.Instruments.Models
+﻿using Aspire.Areas.Instruments.Models.Enums;
+using Aspire.Areas.Instruments.ViewModels;
+
+namespace Aspire.Areas.Instruments.Models
 {
-    public class InstrumentViewModel
+    public class Instrument
     {
         public int Id { get; set; }
-        //public Type Type { get; set; } on hold till Kris gets clarification
-        public int InventoryId { get; set; } // what is this?
-        public string SerialNumber { get; set; }
-        public int Make { get; set; }
-        public int Model { get; set; }
+        public int MakeId { get; set; }
+        public InstrumentType InstrumentType { get; set; }
         public int ProgramId { get; set; }
-        public int StudentId { get; set; }
-        public string Note { get; set; }
+        public int UserId { get; set; } = 1;
+        public string SerialNumber { get; set; }
+        public string Notes { get; set; }
+
+        public Instrument(CreateInstrumentViewModel createInstrumentViewModel)
+        {
+            MakeId = createInstrumentViewModel.SelectedMakeId;
+            InstrumentType = createInstrumentViewModel.SelectedInstrumentType;
+            ProgramId = createInstrumentViewModel.SelectedProgramId;
+            //add user later
+            SerialNumber = createInstrumentViewModel.SerialNumber;
+            Notes = createInstrumentViewModel.Notes;
+        }
+
+        public Instrument() { }
     }
 }

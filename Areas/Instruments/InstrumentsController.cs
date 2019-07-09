@@ -1,5 +1,6 @@
 ﻿using Aspire.Areas.Instruments.Data.Commands;
 using Aspire.Areas.Instruments.Data.Queries;
+using Aspire.Areas.Instruments.Models;
 using Aspire.Areas.Instruments.ViewModels;
 using Aspire.Areas.Shared.Data.Queries;
 using MediatR;
@@ -48,11 +49,13 @@ namespace Aspire.Areas.Instruments
                 return View(createInstrumentViewModel);
             }
 
-            var instrumentId = await _mediator.Send(CreateInstrument.With(createInstrumentViewModel));
+            var instrument = new Instrument(createInstrumentViewModel);
+
+            var instrumentId = await _mediator.Send(CreateInstrument.With(instrument));
 
             if(instrumentId == 0)
             {
-                return View();
+                return View("~/Shared/Views/Shared/Error.cshtml");
             }
 
             return RedirectToAction("Index", "Home");
