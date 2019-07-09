@@ -1,0 +1,18 @@
+﻿@using Aspire.Navigation.Models
+@model  NavigationViewModel
+
+    <div class="bg-light border-right" id="sidebar-wrapper">
+        <div class="sidebar-heading">
+            <a href="@Url.Action("Index", "Home")">Aspire</a>
+        </div>
+
+        <div class="list-group list-group-flush">
+            @foreach (var navigationItem in Model.NavigationItems)
+            {
+                <a href="@navigationItem.TargetUrl"
+                   class="list-group-item list-group-item-action bg-light">
+                    @navigationItem.Name
+                </a>
+            }
+        </div>
+    </div>

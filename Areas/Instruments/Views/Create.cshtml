@@ -1,0 +1,107 @@
+﻿@using Aspire.Areas.Instruments.ViewModels
+@model  CreateInstrumentViewModel
+
+@{
+    Layout = "~/Areas/Shared/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="~/js/FormHelpers.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById('SelectedMakeId').addEventListener('change', async (event) => {
+            showPleaseWait('Retrieving Models...');
+
+            const selectedMakeId = event.target.value;
+
+            let response = await fetch(`/Instruments/GetModelsByMake?makeId=${selectedMakeId}`);
+
+            let modelSelectOptions = await response.json();
+
+            clearAndAddOptionsToSelect('SelectedModelId', modelSelectOptions);
+
+            hidePleaseWait();
+        });
+
+        document.getElementById('SelectedProgramId').addEventListener('change', async (event) => {
+            showPleaseWait('Retrieving Students...');
+
+            const selectedProgramId = event.target.value;
+
+            let response = await fetch(`/Instruments/GetStudentsByProgram?programId=${selectedProgramId}`);
+
+            let modelSelectOptions = await response.json();
+
+            clearAndAddOptionsToSelect('SelectedStudentId', modelSelectOptions);
+
+            hidePleaseWait();
+        });
+    });
+</script>
+
+<div class="row">
+    <div class="modal"></div>
+    <div class="col-md-6 offset-md-3 order-md-1">
+        <h4 class="mb-3 text-center">Create Instrument</h4>
+
+        <div asp-validation-summary="All" class="text-danger">
+            <span class="text-danger">Please Correct the following:</span>
+        </div>
+
+        <form class="needs-validation" action="@Url.Action("Create", "Instruments")" method="post">
+
+            <div class="mb-3">
+                <label asp-for="SerialNumber"></label>
+                <input asp-for="SerialNumber" class="form-control" type="text" />
+                <span asp-validation-for="SerialNumber" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Notes"></label>
+                <textarea asp-for="Notes" class="form-control" type="text"></textarea>
+                <span asp-validation-for="Notes" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="SelectedMakeId"></label>
+                <select asp-for="SelectedMakeId" asp-items="Model.Makes" class="form-control">
+                    <option selected disabled>Select One</option>
+                </select>
+                <span asp-validation-for="SelectedMakeId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="SelectedModelId"></label>
+                <select asp-for="SelectedModelId" asp-items="Model.Models" class="form-control">
+                    <option selected disabled>Select One</option>
+                </select>
+                <span asp-validation-for="SelectedModelId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="SelectedProgramId"></label>
+                <select asp-for="SelectedProgramId" asp-items="Model.Programs" class="form-control">
+                    <option selected disabled>Select One</option>
+                </select>
+                <span asp-validation-for="SelectedProgramId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="SelectedStudentId"></label>
+                <select asp-for="SelectedStudentId" asp-items="Model.Students" class="form-control">
+                    <option selected disabled>Select One</option>
+                </select>
+                <span asp-validation-for="SelectedStudentId" class="text-danger"></span>
+            </div>
+
+
+            <hr class="mb-4" />
+            <button class="btn btn-primary btn-lg btn-block" type="submit">Create</button>
+
+        </form>
+    </div>
+</div>
+
+
+
+

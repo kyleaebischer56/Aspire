@@ -1,0 +1,19 @@
+﻿using Microsoft.Extensions.DependencyInjection;
+
+namespace Aspire.Configuration.IoC
+{
+    public static class ConnectionFactoryExtension
+    {
+        public static IServiceCollection AddConnectionFactories(this IServiceCollection @this)
+        {
+            @this.AddSingleton<IIocDbConnectionFactory>(sp =>
+            {
+                var configuration = sp.GetService<ApplicationConfiguration>();
+
+                return new IocDbConnectionFactory(configuration.IocDbReadOnly, configuration.IocDbReadWrite);
+            });
+
+            return @this;
+        }
+    }
+}
