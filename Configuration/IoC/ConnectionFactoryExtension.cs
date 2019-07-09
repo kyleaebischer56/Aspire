@@ -10,7 +10,7 @@ namespace Aspire.Configuration.IoC
             {
                 var configuration = sp.GetService<ApplicationConfiguration>();
 
-                return new IocDbConnectionFactory(configuration.IocDbReadOnly, configuration.IocDbReadWrite);
+                return new IocDbConnectionFactory(configuration.ConnectionStrings.IocDbReadOnly, configuration.ConnectionStrings.IocDbReadWrite);
             });
 
             return @this;

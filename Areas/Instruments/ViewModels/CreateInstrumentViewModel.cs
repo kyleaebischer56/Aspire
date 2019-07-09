@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Aspire.Areas.Instruments.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace Aspire.Areas.Instruments.ViewModels
 {
@@ -15,11 +17,12 @@ namespace Aspire.Areas.Instruments.ViewModels
         public int SelectedMakeId { get; set; }
 
         //Going to have to get these values from the DB, but for now just hard code them
-        public List<SelectListItem> Makes { get; } = new List<SelectListItem>
-        {
-            new SelectListItem { Value = "1", Text = "Yamaha" },
-            new SelectListItem { Value = "2", Text = "Roland" }
-        };
+        public List<SelectListItem> Makes { get; } 
+        //    = new List<SelectListItem>
+        //{
+        //    new SelectListItem { Value = "1", Text = "Yamaha" },
+        //    new SelectListItem { Value = "2", Text = "Roland" }
+        //};
 
         [Required(ErrorMessage = "Please select a Model")]
         [Display(Name = "Model")]
@@ -31,11 +34,12 @@ namespace Aspire.Areas.Instruments.ViewModels
         public int SelectedProgramId { get; set; }
         //Accompanying list of programs to pick from
 
-        public List<SelectListItem> Programs { get; } = new List<SelectListItem>
-        {
-            new SelectListItem { Value = "1", Text = "Seminole" },
-            new SelectListItem { Value = "2", Text = "Clair-Mel" }
-        };
+        public List<SelectListItem> Programs { get; } 
+        //    = new List<SelectListItem>
+        //{
+        //    new SelectListItem { Value = "1", Text = "Seminole" },
+        //    new SelectListItem { Value = "2", Text = "Clair-Mel" }
+        //};
 
         [Display(Name = "Student")]
         public int SelectedStudentId { get; set; }
@@ -45,5 +49,22 @@ namespace Aspire.Areas.Instruments.ViewModels
 
         [MaxLength(2000, ErrorMessage = "Notes must be 2000 or less characters")]
         public string Notes { get; set; }
+
+        public CreateInstrumentViewModel(IEnumerable<Make> makes, IEnumerable<Shared.Models.Program> programs)
+        {
+            Makes = new List<SelectListItem>(makes.Count());
+
+            foreach(var make in makes)
+            {
+                Makes.Add(new SelectListItem(make.Description, make.Id.ToString()));
+            }
+
+            Programs = new List<SelectListItem>(programs.Count());
+
+            foreach(var program in programs)
+            {
+                Programs.Add(new SelectListItem(program.Name, program.Id.ToString()));
+            }
+        }
     }
 }

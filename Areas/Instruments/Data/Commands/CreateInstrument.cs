@@ -2,6 +2,7 @@
 using Aspire.Configuration;
 using Dapper;
 using MediatR;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -35,13 +36,8 @@ namespace Aspire.Areas.Instruments.Data.Commands
         {
             using (var connection = _iocDbConnectionFactory.GetReadWriteConnection())
             {
-                return await connection.QuerySingleAsync<int>(_sproc, message.Instrument);
+                return await connection.QuerySingleAsync<int>(_sproc, message.Instrument, commandType: CommandType.StoredProcedure);
             }
-
-            //To simulate the DB call for now
-            await Task.Delay(2000);
-
-            return 1;
         }
     }
 }
