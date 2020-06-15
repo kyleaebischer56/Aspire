@@ -13,32 +13,13 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-# - script: dotnet build --configuration $(buildConfiguration)
-#   displayName: 'dotnet build $(buildConfiguration)'
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'restore'
-    projects: 'Aspire/Aspire.csproj'
-    feedsToUse: 'select'
+- script: dotnet build --configuration $(buildConfiguration)
+  displayName: 'dotnet build $(buildConfiguration)'
 
-- task: DotNetCoreCLI@2
+- task: AzureRmWebAppDeployment@4
   inputs:
-    command: 'build'
-    projects: 'Aspire/Aspire.csproj'
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'publish'
-    publishWebProjects: false
-    projects: 'Aspire/Aspire.csproj'
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: drop'
-  inputs:
-    PathtoPublish: Aspire/ClientApp/build
-
-# - task: PublishBuildArtifacts@1
-#   inputs:
-#     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-#     ArtifactName: 'drop'
-#     publishLocation: 'Container'
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Microsoft Azure Sponsorship (84e6db44-a316-4988-bc6d-a66404787d16)'
+    appType: 'webApp'
+    WebAppName: 'instrumentsofchange-aspire'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
